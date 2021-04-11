@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import "./TodoList.css";
-import Columns from './Columns'
+import Column from './Column'
+import fetchTodos from './fetchTodos';
 
 
 const TodoStore = () => {
@@ -11,18 +12,13 @@ const TodoStore = () => {
         fetchTodos(url, setToDoData);
     }, []);
 
-    const fetchTodos = async (url, callback) => {
-        const response = await fetch(url);
-        const data = await response.json();
-        callback(data);
-    }
-
+    
     const changeColumns = (columns) => {
         setToDoData(columns);
     }
 
     const columnLists = todoData.map((data, i) => (
-        <Columns key={data.columns[i].id} data={data} changeColumns={changeColumns} />
+        <Column key={data.columns[i].id} data={data} changeColumns={changeColumns} />
     ))
 
     return (

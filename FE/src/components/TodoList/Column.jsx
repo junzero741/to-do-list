@@ -7,15 +7,10 @@ import Form from './Form'
 
 const Column = ({data:{columns}, changeColumns}) => {
     const [initialColumns, setColumn] = useState(columns);
-    const [cardList, setCardList] = useState(columns.cards)
-    // 현재 true값 false값으로 변경해주어야함
-    // const [isClicked, setIsClicked] = useState(false);
     const [currentID, setCurrentID] = useState(null);
-    // const toggleCard = () => {
-    // }
+    const [cardList, setCardList] = useState(columns.map(el => (el.cards)));
    
 
-    // null값인지 값이 들어있는지 확인
     const handleClick = (clickedID) => {
         if(currentID !== clickedID) setCurrentID(clickedID);
         else if(currentID !== null) setCurrentID(null);
@@ -23,11 +18,15 @@ const Column = ({data:{columns}, changeColumns}) => {
         
     };
 
-    const addCard = ({newCard}) => {
-        setCardList([...cardList, newCard])
-    }
 
-    const columnLists = initialColumns.map(({id, title, cards}) => (
+    /* columnLists 의 각 column 별로  독립된 상태를 갖는 cardList가 필요한데,
+        상태를 관리하는 useState는 리액트 함수 최상위에서만 쓸 수 있다는 문제가 있음.
+    */
+
+    const columnLists = initialColumns.map(({id, title, cards}) => {
+  
+
+        return (
         <li key={id}>
         <header>
         <span>{title}</span>
@@ -36,12 +35,13 @@ const Column = ({data:{columns}, changeColumns}) => {
         <button><i className="fas fa-times"></i></button>
         </header>
         <div>
-        
-        {currentID === id ? <Form key={id} cards={cards} addCard={addCard}/> : <></>}
-        {console.log(currentID, id)}
+        {currentID === id ? <Form key={id} cardList = {cardList} setCardList={setCardList} /> : <></>}
         </div>
+        <ul><Card cardList={cardList} cards = {cards}/></ul>
         </li>
-))
+            )      
+        
+    })
 
     return (
         <ColumnContainer>
@@ -50,4 +50,4 @@ const Column = ({data:{columns}, changeColumns}) => {
     )
 }
 
-export default Column
+export default Column;
