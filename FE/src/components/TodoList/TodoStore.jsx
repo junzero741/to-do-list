@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import Columns from './Columns';
+import Column from './Column';
 import styled from 'styled-components';
 
 const TodoStore = () => {
   const [todoData, setToDoData] = useState([]);
 
   useEffect(() => {
-    const url = 'http://localhost:3000/data.json';
+    const url = '/boards';
     fetchTodos(url, setToDoData);
   }, []);
 
@@ -16,17 +16,17 @@ const TodoStore = () => {
     callback(data);
   };
 
-  const changeColumns = (columns) => {
-    setToDoData(columns);
-  };
-
-  const columnLists = todoData.map((data, i) => (
-    <Columns
-      key={data.columns[i].id}
-      data={data}
-      changeColumns={changeColumns}
-    />
-  ));
+  const columnLists = todoData.map((column, columnI, columnArray) => {
+    return (
+      <Column
+        key={column.id}
+        title={column.title}
+        cards={column.cards}
+        columnI={columnI}
+        columnArray={columnArray}
+      />
+    );
+  });
 
   return (
     <ToDoListWrap>

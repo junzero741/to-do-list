@@ -4,10 +4,10 @@ import Form from './Form';
 import styled from 'styled-components';
 import Icon from '../atoms/Icons';
 
-const Column = ({ data: { columns } }) => {
-  const [columnData, setColumnData] = useState(columns);
+const Column = ({ key, title, cards, columnI }) => {
+  const [columnData, setColumnData] = useState();
   const [currentID, setCurrentID] = useState(null);
-
+  console.log(key);
   const handleClick = (clickedID) => {
     return () => {
       if (currentID !== clickedID) setCurrentID(clickedID);
@@ -23,8 +23,8 @@ const Column = ({ data: { columns } }) => {
     };
   };
 
-  const addCard = (column) => {
-    setColumnData(Object.assign(columnData, column));
+  const addCard = (columnArray) => {
+    setColumnData(Object.assign(columnData, columnArray));
   };
 
   const offDisplay = () => {
@@ -36,10 +36,9 @@ const Column = ({ data: { columns } }) => {
     else callbackSetInput(false);
   };
 
-  const columnList = columnData.map((column) => {
-    const { id, title, cards } = column;
-    return (
-      <section key={id} className="column">
+  return (
+    <ColumnContainer>
+      <div key={key} className="column">
         <ul>
           <header className="column__header">
             <div className="title">
@@ -47,32 +46,30 @@ const Column = ({ data: { columns } }) => {
               <span className="title__icon">{cards.length}</span>
             </div>
             <div className="column_button-wrap">
-              <button onClick={handleClick(id)}>
+              <button onClick={handleClick(key)}>
                 <Icon type="plus" />
               </button>
-              <button onClick={handleClickDeleteBtn(id)}>
+              <button onClick={handleClickDeleteBtn(key)}>
                 <Icon type="cancel" />
               </button>
             </div>
           </header>
           <div>
-            {currentID === id && (
+            {currentID === key && (
               <Form
-                key={id}
+                key={key}
                 addCard={addCard}
                 offDisplay={offDisplay}
-                column={column}
+                column={columnData}
                 checkInputValue={checkInputValue}
               />
             )}
             <CardLists cards={cards} checkInputValue={checkInputValue} />
           </div>
         </ul>
-      </section>
-    );
-  });
-
-  return <ColumnContainer>{columnList}</ColumnContainer>;
+      </div>
+    </ColumnContainer>
+  );
 };
 
 export default Column;
