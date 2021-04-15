@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import Icon from '../atoms/Icons';
 import AddBtn from '../atoms/AddBtn';
 
-const Column = ({ data: { columns } }) => {
-  const [columnData, setColumnData] = useState(columns);
+const Column = ({ grp, grpI, handleDragEnter, handleDragStart, dragging }) => {
+  const [columnData, setColumnData] = useState(grp.columns);
   const [currentID, setCurrentID] = useState(null);
 
   const handleClick = (clickedID) => {
@@ -38,9 +38,7 @@ const Column = ({ data: { columns } }) => {
       title: prompt('칼럼 이름을 입력하세요'),
       cards: [],
     };
-    if (columnToAdd.title) {
-      setColumnData([...columnData, columnToAdd]);
-    }
+    if (columnToAdd.title) setColumnData([...columnData, columnToAdd]);
   };
 
   const checkInputValue = ({ title, content }, callbackSetInput) => {
@@ -48,7 +46,7 @@ const Column = ({ data: { columns } }) => {
     else callbackSetInput(false);
   };
 
-  const columnList = columnData.map((column) => {
+  const columnList = columnData.map((column, columnI) => {
     const { id, title, cards } = column;
     return (
       <section key={id} className="column">
@@ -77,7 +75,17 @@ const Column = ({ data: { columns } }) => {
                 checkInputValue={checkInputValue}
               />
             )}
-            <CardLists cards={cards} checkInputValue={checkInputValue} />
+            <CardLists
+              cards={cards}
+              checkInputValue={checkInputValue}
+              column={column}
+              columnI={columnI}
+              grp={grp}
+              grpI={grpI}
+              handleDragEnter={handleDragEnter}
+              handleDragStart={handleDragStart}
+              dragging={dragging}
+            />
           </div>
         </ul>
       </section>

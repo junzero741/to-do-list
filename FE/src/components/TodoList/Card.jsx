@@ -5,14 +5,25 @@ import { InputTitle, InputContent } from '../atoms/StyledInputs';
 import Icon from '../atoms/Icons';
 import resize from './custom.js';
 
-const Card = ({ cards, checkInputValue }) => {
+const Card = ({
+  card,
+  checkInputValue,
+  cardI,
+  column,
+  columnI,
+  grp,
+  grpI,
+  handleDragEnter,
+  handleDragStart,
+  dragging,
+}) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [hasInput, setHasInput] = useState(false);
   const [inputs, setInputs] = useState({
     title: '',
     content: '',
   });
-  const { title, content, author } = cards;
+  const { title, content, author } = card;
   const cardTitle = useRef();
   const cardContent = useRef();
 
@@ -43,7 +54,15 @@ const Card = ({ cards, checkInputValue }) => {
   }, [checkInputValue, inputs]);
 
   return (
-    <CardContainer className="clicked">
+    <CardContainer
+      className="clicked"
+      draggable
+      onDragStart={(e) => handleDragStart(e, { columnI, cardI })}
+      onDragEnter={
+        dragging ? (e) => handleDragEnter(e, { columnI, cardI }) : null
+      }
+      key={card}
+    >
       <div className="card__icon">
         <Icon type={'cancel'} />
       </div>
