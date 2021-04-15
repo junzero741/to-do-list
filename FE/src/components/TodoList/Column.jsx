@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import Icon from '../atoms/Icons';
 import PopUp from '../atoms/PopUp';
 
-const Column = ({ data: { columns } }) => {
-  const [columnData, setColumnData] = useState(columns);
+const Column = ({ key, title, cards, columnI }) => {
+  const [columnData, setColumnData] = useState();
   const [currentID, setCurrentID] = useState(null);
   const [isDeleteBtnClicked, SetIsDeleteBtnClicked] = useState(false);
   const [newColumns, setNewColumns] = useState([]);
@@ -26,8 +26,8 @@ const Column = ({ data: { columns } }) => {
     };
   };
 
-  const addCard = (column) => {
-    setColumnData(Object.assign(columnData, column));
+  const addCard = (columnArray) => {
+    setColumnData(Object.assign(columnData, columnArray));
   };
 
   const rewind = () => SetIsDeleteBtnClicked(!isDeleteBtnClicked);
@@ -51,52 +51,47 @@ const Column = ({ data: { columns } }) => {
     else callbackSetInput(false);
   };
 
-  const columnList = columnData.map((column) => {
-    const { id, title, cards } = column;
-    return (
-      <section key={id} className="column">
-        <ul>
-          <header className="column__header">
-            <div className="title">
-              <h2 className="title__h2">{title}</h2>
-              <span className="title__icon">{cards.length}</span>
-            </div>
-            <div className="column_button-wrap">
-              <button onClick={handleClick(id)}>
-                <Icon type="plus" />
-              </button>
-              <button onClick={handleClickDeleteBtn(id)}>
-                <Icon type="cancel" />
-              </button>
-            </div>
-          </header>
-          <div>
-            {currentID === id && (
-              <Form
-                key={id}
-                addCard={addCard}
-                offDisplay={offDisplay}
-                column={column}
-                checkInputValue={checkInputValue}
-              />
-            )}
-            <CardLists
-              key={id + title}
-              column={column}
-              cards={cards}
-              checkInputValue={checkInputValue}
-              SetIsDeleteBtnClicked={SetIsDeleteBtnClicked}
-              setNewColumns={setNewColumns}
-            />
-          </div>
-        </ul>
-      </section>
-    );
-  });
-
   return (
     <>
-      <ColumnContainer>{columnList}</ColumnContainer>
+      <ColumnContainer>
+        <div key={key} className="column">
+          <ul>
+            <header className="column__header">
+              <div className="title">
+                <h2 className="title__h2">{title}</h2>
+                <span className="title__icon">{cards.length}</span>
+              </div>
+              <div className="column_button-wrap">
+                <button onClick={handleClick(key)}>
+                  <Icon type="plus" />
+                </button>
+                <button onClick={handleClickDeleteBtn(key)}>
+                  <Icon type="cancel" />
+                </button>
+              </div>
+            </header>
+            <div>
+              {currentID === key && (
+                <Form
+                  key={key}
+                  addCard={addCard}
+                  offDisplay={offDisplay}
+                  column={columnData}
+                  checkInputValue={checkInputValue}
+                />
+              )}
+              <CardLists
+                key={key}
+                column={columnData}
+                cards={cards}
+                checkInputValue={checkInputValue}
+                SetIsDeleteBtnClicked={SetIsDeleteBtnClicked}
+                setNewColumns={setNewColumns}
+              />
+            </div>
+          </ul>
+        </div>
+      </ColumnContainer>
       <PopUp
         isDeleteBtnClicked={isDeleteBtnClicked}
         rewind={rewind}
