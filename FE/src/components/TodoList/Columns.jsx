@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Icon from '../atoms/Icons';
 import PopUp from '../atoms/PopUp';
 import { deleteCard, deleteColumn } from './useFetch.js';
+import AddBtn from '../atoms/AddBtn';
 
 const Column = ({ todoData }) => {
   const [columnData, setColumnData] = useState(todoData);
@@ -47,6 +48,15 @@ const Column = ({ todoData }) => {
     const path = `${column.id}/cards/${cardID}`;
     deleteCard(path, columnData, column, setColumnData);
     rewind();
+  const addColumn = () => {
+    const columnToAdd = {
+      id: columnData.length + 1,
+      title: prompt('칼럼 이름을 입력하세요'),
+      cards: [],
+    };
+    if (columnToAdd.title) {
+      setColumnData([...columnData, columnToAdd]);
+    }
   };
 
   const checkInputValue = ({ title, content }, callbackSetInput) => {
@@ -99,7 +109,9 @@ const Column = ({ todoData }) => {
 
   return (
     <>
-      <ColumnContainer>{columnList}</ColumnContainer>
+      <ColumnContainer>{columnList}<div onClick={addColumn}>
+        <AddBtn />
+      </div></ColumnContainer>
       <PopUp
         isDeleteBtnClicked={isDeleteBtnClicked}
         rewind={rewind}
