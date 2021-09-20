@@ -1,27 +1,5 @@
-![](file:///var/folders/qj/fllt35893m5bz926_w32hbd40000gn/T/TemporaryItems/NSIRD_screencaptureui_AQNIbt/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-04-09%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%204.37.21.png)## 브랜치 전략
 
-PR branch - step\* 프론트엔드 개발 - FEdev
-![branch](https://user-images.githubusercontent.com/71166372/114145273-307f9380-9951-11eb-9d71-8edabda939f3.JPG)
 
-#### 순서
-
-**백엔드(Hiro)**
-
-- step branch에 바로 PR 후 merge
-
-**프론트엔드(Q, Goody)**
-
-1. FEdev branch에 각 local에서 개발한 코드를 PR 후 merge
-2. 그 다음 step branch로 다시 PR 후 merge **(step에 바로 올렸을 시 충돌 방지 - FE에서 해결)**
-3. FEdev -> step\* 으로 PR 후 merge
-
-**개발 완료 후 PR 과정**
-
-1. 완료된 step branch는 upstream으로 PR - (upstream team16 <= origin step\*)
-2. rebase는 한명이 한다. 다른 팀원에게 알려준다. 다른 팀원은 git pull origin team16
-3. team16 branch에서 새로운 step2, FEdev 브랜치 생성
-4. step1과 이전의 FEdev branch는 삭제한다.
-5. 반복
 
 ## 팀원 소개
 
